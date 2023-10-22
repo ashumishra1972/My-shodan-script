@@ -150,7 +150,7 @@ def get_banner(shodan_api_key,bold):
     get_Options(shodan_api_key,bold)
 
 def main():
-    shodan_api_key = shodan.Shodan("kPzgGpEx9vqIzPbUbD4HUDlNhj9xvpN2")
+    shodan_api_key = shodan.Shodan("")
     bold = '\x1b[1m'
 
     get_banner(shodan_api_key,bold)
