@@ -30,7 +30,10 @@ A Python tool project designed to utilize Shodan for gathering information about
 ## Installation
 
 ```
+git clone https://github.com/ashumishra1972/ShodanNet.git
+cd ShodanNet
 pip3 install -r requirements.txt
+
 ```
 Pass your Shodan Api Key in code 
 
