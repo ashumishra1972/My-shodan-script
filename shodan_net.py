@@ -40,6 +40,7 @@ def fetch_ics(shodan_api_key,bold):
     print(colored(bold + "\n Fetching IOT License Plate Readers... ",'blue'))
     result(shodan_api_key,'P372 "ANPR enabled"')
     print(colored(bold + "\n Fetching  Internet Connected Satellites... ",'blue'))
+    result(shodan_api_key,'"Open Webif"')
     result(shodan_api_key,'("Cobham SATCOM") OR ("Sailor VSAT")')
     result(shodan_api_key,"Sailor VSAT")
     result(shodan_api_key,"Cobham SATCOM")
