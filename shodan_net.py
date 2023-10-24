@@ -1,11 +1,13 @@
+import requests
 import pyfiglet
 from termcolor import colored
 import time
 import shodan
 from tqdm import tqdm
+import sys
 
 def result(shodan_api_key,query):
-    results = shodan_api_key.search(query,limit=1)
+    results = shodan_api_key.search(query,limit=10)
     if not results or 'matches' not in results or not results['matches']:
         print(colored(" \n No Results Found \n ",'red'))
     else:
@@ -18,8 +20,6 @@ def result(shodan_api_key,query):
             print(colored("ISP:", 'yellow') + f" {resultMatch['isp']}")
             print('')
             time.sleep(2)
-
-
 def fetch_internet_cameras(shodan_api_key,bold):
     print(colored(bold + "\n Fetching Webcams From Internet.... \n", 'red'))
     for _ in tqdm(range(2), ascii=True, bar_format="{l_bar}%s{bar}%s{r_bar}" % ('\x1b[92m','\x1b[0m')):
@@ -108,8 +108,6 @@ def fetch_vulnerable_servers(shodan_api_key,bold):
     result(shodan_api_key,'"Docker Containers:" port:2375')
     print(colored(bold + "\n Fetching Docker Private Registries ... ",'blue'))
     result(shodan_api_key,'"Docker-Distribution-Api-Version: registry" "200 OK" -gitlab')
-    print(colored(bold + "\n Fetching Pi-hole Open DNS Servers... ",'blue'))
-    result(shodan_api_key,'"dnsmasq-pi-hole" "Recursion: enabled"')
     print(colored(bold + "\n Already Logged-In as root via Telnet ... ",'blue'))
     result(shodan_api_key,'"root@" port:23 -login -password -name -Session')
     print(colored(bold + "\n Fetching Pi-hole Open DNS Servers... ",'blue'))
@@ -139,6 +137,7 @@ def fetch_vulnerable_servers(shodan_api_key,bold):
     print(colored(bold + "\n Fetching Minecraft Servers ... ",'blue'))
     result(shodan_api_key,'"Minecraft Server" "protocol 340" port:25565')
 
+
 def fetch_remote_desktop(shodan_api_key,bold):
     print(bold + colored("\n Fetching Unauthenticated Remote Desktop Servers... \n",'red'))
     for _ in tqdm(range(2), ascii=True, bar_format="{l_bar}%s{bar}%s{r_bar}" % ('\x1b[92m','\x1b[0m')):
@@ -164,9 +163,35 @@ def run_all(shodan_api_key,bold):
     fetch_vulnerable_servers(shodan_api_key,bold)
     fetch_remote_desktop(shodan_api_key,bold)
     fetch_printers(shodan_api_key,bold)
-    print(colored(bold + "Thanks for using our tool!", 'green'))
 
-    exit()
+def custom_search_query(shodan_api_key,bold):
+    try:
+        query = str(input(colored(bold + "\n Enter your Query: ", 'yellow')))
+        number_query = int(input(colored(bold +"\n Enter the number of results you need: ", 'yellow')))
+        if number_query <=0:
+            print(colored(bold + "\n Error: The minimum number of results should be at least 1. Please try again with a valid number.\n", 'red'))
+            sys.exit(1)
+        else:
+            print(colored(bold + "\n Fetching " + query + " Please Wait... \n ", 'blue'))
+            for _ in tqdm(range(2), ascii=True, bar_format="{l_bar}%s{bar}%s{r_bar}" % ('\x1b[92m', '\x1b[0m')):
+                time.sleep(2)
+                results = shodan_api_key.search(query, limit=number_query)
+            if not results or 'matches' not in results or not results['matches']:
+                print(colored(bold + " \n No Results Found\n ", 'red'))
+                time.sleep(2)
+            else:
+                for resultMatch in results['matches']:
+                    time.sleep(1)
+                    print("\n")
+                    print(colored("IP:", 'yellow') + f" {resultMatch['ip_str']}")
+                    print(colored("Port:", 'yellow') + f" {resultMatch['port']}")
+                    print(colored("Organization:", 'yellow') + f" {resultMatch.get('org', 'N/A')}")
+                    print(colored("ISP:", 'yellow') + f" {resultMatch.get('isp', 'N/A')}")
+                    print('')
+                    time.sleep(2)
+    except Exception as e:
+        print(colored(f"\n An unexpected error occurred: {str(e)}\n", 'red'))
+        exit()
 
 def get_Options(shodan_api_key,bold):
     print(colored("\nSelect Choice \n",'green'))
@@ -176,40 +201,44 @@ def get_Options(shodan_api_key,bold):
     print("4. Exposed Server")
     print("5. Remote Desktop")
     print("6. Printers & Copiers")
-    print("7. Run All")
-    print("8. Exit")
+    print("7. Run All of the Above")
+    print("8. Custom Search Query")
+    print("9. Exit")
 
-    print("\n ==> Enter your Choice (1-8) ")
+    print("\n ==> Enter your Choice (1-9) ")
     option_input=(int(input()))
-    if option_input <=0 or option_input>8 :
+    if option_input <=0 or option_input>9 :
         print(colored(bold + "\n Invalid Input !!!!!  ",'red'))
-        print(colored(bold + "\n'' RETRY AGAIN Select Options Between  (1-8) '' ",'yellow'))
+        print(colored(bold + "\n Select Options Between  (1-9)",'yellow'))
         time.sleep(1)
-        get_Options()
+        get_Options(shodan_api_key,bold)
     else:
         if option_input == 1:
             fetch_internet_cameras(shodan_api_key,bold)
-            print(colored(bold + " Thanks for using our tool! ", 'green'))
+            print(colored(bold + "\n Thanks for using our tool! ", 'green'))
         if option_input == 2:
             fetch_ics(shodan_api_key,bold)
-            print(colored(bold + "Thanks for using our tool!", 'green'))
+            print(colored(bold + "\n Thanks for using our tool!", 'green'))
         if option_input == 3:
             fetch_iot(shodan_api_key,bold)
-            print(colored(bold + "Thanks for using our tool!", 'green'))
+            print(colored(bold + "\n Thanks for using our tool!", 'green'))
         if option_input == 4:
             fetch_vulnerable_servers(shodan_api_key,bold)
-            print(colored(bold + "Thanks for using our tool!", 'green'))
+            print(colored(bold + "\n Thanks for using our tool!", 'green'))
         if option_input == 5:
             fetch_remote_desktop(shodan_api_key,bold)
-            print(colored(bold + "Thanks for using our tool!", 'green'))
+            print(colored(bold + "\n Thanks for using our tool!", 'green'))
         if option_input == 6:
             fetch_printers(shodan_api_key,bold)
-            print(colored(bold + "Thanks for using our tool!", 'green'))
+            print(colored(bold + "\n Thanks for using our tool!", 'green'))
         if option_input == 7:
             run_all(shodan_api_key,bold)
-            print(colored(bold + "Thanks for using our tool!", 'green'))
+            print(colored(bold + "\n Thanks for using our tool!", 'green'))
         if option_input == 8:
-            print(colored(bold + "Thanks for using our tool!", 'green'))
+            custom_search_query(shodan_api_key,bold)
+            get_Options(shodan_api_key,bold)
+        if option_input == 9:
+            print(colored(bold + "\n Thanks for using our tool!", 'green'))
             exit()
     
 def get_banner(shodan_api_key,bold):
@@ -222,12 +251,25 @@ def get_banner(shodan_api_key,bold):
     print(colored_banner)
     get_Options(shodan_api_key,bold)
 
-def main():
-    shodan_api_key = shodan.Shodan("<pass-your-shodan-api-key-here")
-    bold = '\x1b[1m'
+def api_check(bold):
+    if len(sys.argv) > 1:
+        SHODAN_API_KEY=sys.argv[1]
+        print(colored(bold + "\n Checking your API Key! \n ", 'green'))
+        response=requests.get("https://api.shodan.io/account/profile?key="+SHODAN_API_KEY)
+        if response.status_code == 200:
+            shodan_api_key = shodan.Shodan(SHODAN_API_KEY)
+            get_banner(shodan_api_key,bold)
+        else:
+            print(colored(bold + "\n Invalid Api Key Please Try Again !....\n ", 'red'))
+            exit()
+    else:
+        usage_message = """Usage: python3 shodan_net.py <your_api_key>"""
+        print(colored(bold + "\nPlease Pass your Api Key !....\n ", 'red'))
+        print(colored(bold+usage_message, 'green'))
 
-    # get_banner(shodan_api_key,bold)
-    fetch_vulnerable_servers(shodan_api_key,bold)
+def main():
+    bold = '\x1b[1m'
+    api_check(bold)
 
 if __name__ == "__main__":
     main()
