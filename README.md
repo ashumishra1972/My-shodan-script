@@ -57,6 +57,19 @@ A Python tool project designed to utilize Shodan for gathering information about
    - Fetching Unauthenticated Remote Desktop Servers [VNC]
 6. Printers And Copiers
    - Online Printers
+7. Run All of the Above
+8. Custom Search Query { Write your Own Queries }
+
+## Screenshot
+
+<p align="center">
+<img src="https://github.com/ashumishra1972/ShodanNet/blob/main/Main.png">
+</p>
+
+<br>
+<p align="center">
+<img src="https://github.com/ashumishra1972/ShodanNet/blob/main/Camera_sample.png">
+</p>
 
 ## Installation
 
@@ -66,11 +79,10 @@ cd ShodanNet
 pip3 install -r requirements.txt
 
 ```
-Pass your Shodan Api Key in code 
 
 Run the Script
 ```
-python3 shodan_net.py
+python3 shodan_net.py <SHODAN-API-KEY>
 ```
 
 ## Support
