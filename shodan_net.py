@@ -1,5 +1,4 @@
 import requests
-import pyfiglet
 from termcolor import colored
 import time
 import shodan
