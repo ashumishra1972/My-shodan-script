@@ -243,11 +243,21 @@ def get_Options(shodan_api_key,bold):
     
 def get_banner(shodan_api_key,bold):
     print("\n\n\n")
-    banner=pyfiglet.Figlet(font='univers',width = 500)
-    banner_text=banner.renderText("ShodanNet")
-    author = " "*65 +"Author: Ashutosh Mishra"
-    combine = banner_text + author
-    colored_banner = colored(combine, 'yellow')
+    colored_banner= '''
+
+     $$$$$$\  $$\                       $$\                     $$\   $$\            $$\     
+$$  __$$\ $$ |                      $$ |                    $$$\  $$ |           $$ |    
+$$ /  \__|$$$$$$$\   $$$$$$\   $$$$$$$ | $$$$$$\  $$$$$$$\  $$$$\ $$ | $$$$$$\ $$$$$$\   
+\$$$$$$\  $$  __$$\ $$  __$$\ $$  __$$ | \____$$\ $$  __$$\ $$ $$\$$ |$$  __$$\\_$$  _|  
+ \____$$\ $$ |  $$ |$$ /  $$ |$$ /  $$ | $$$$$$$ |$$ |  $$ |$$ \$$$$ |$$$$$$$$ | $$ |    
+$$\   $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$  __$$ |$$ |  $$ |$$ |\$$$ |$$   ____| $$ |$$\ 
+\$$$$$$  |$$ |  $$ |\$$$$$$  |\$$$$$$$ |\$$$$$$$ |$$ |  $$ |$$ | \$$ |\$$$$$$$\  \$$$$  |
+ \______/ \__|  \__| \______/  \_______| \_______|\__|  \__|\__|  \__| \_______|  \____/ 
+                                                                                         
+                                                                                         
+                                                                                         
+                                                                 Author: Ashutosh Mishra
+    '''
     print(colored_banner)
     get_Options(shodan_api_key,bold)
 
