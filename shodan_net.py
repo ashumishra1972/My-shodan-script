@@ -243,7 +243,7 @@ def get_Options(shodan_api_key,bold):
     
 def get_banner(shodan_api_key,bold):
     print("\n\n\n")
-    banner=pyfiglet.Figlet(font='big_money-nw',width = 500)
+    banner=pyfiglet.Figlet(font='univers',width = 500)
     banner_text=banner.renderText("ShodanNet")
     author = " "*65 +"Author: Ashutosh Mishra"
     combine = banner_text + author
